@@ -15,8 +15,6 @@ jobs:
       repository-projects: write
       statuses: write
       pull-requests: write
-      # Grant permission to create repositories
-      repository-administration: write
     runs-on: ubuntu-latest
     steps:
       - name: Vérifier l'entrée
