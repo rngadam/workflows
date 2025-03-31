@@ -15,7 +15,7 @@ jobs:
       - name: Vérifier l'entrée
         run: |
           echo "Nom du dépôt : ${{ github.event.inputs.repo_name }}"
-          # Valider le nom du dépôt (peut ajouter des vérifications supplémentaires)
+          # Valider le nom du dépôt
           if [[ -z "${{ github.event.inputs.repo_name }}" ]]; then
             echo "Le nom du dépôt est vide. Veuillez fournir un nom de dépôt."
             exit 1
@@ -26,7 +26,13 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Créer un dépôt
+      - name: Authenticate with GitHub CLI
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Créer un dépôt public
         run: |
           gh repo create "${{ github.event.inputs.repo_name }}" --public
         env:
@@ -40,7 +46,9 @@ jobs:
       - name: Initialiser Slidev
         run: |
           npm init slidev
-          # Répondre aux prompts de npm init slidev (peut nécessiter d'autres adaptations)
+          # Provide default answers to the prompts.  Customize as needed.
+          echo "My Slidev Presentation" > title.txt
+          npm init slidev -y --title "My Slidev Presentation"
           echo "Dépôt Slidev initialisé."
 
       - name: Ajouter et commiter les fichiers
@@ -53,3 +61,4 @@ jobs:
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
