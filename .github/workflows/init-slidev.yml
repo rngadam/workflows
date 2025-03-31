@@ -10,11 +10,11 @@ on:
 
 jobs:
   create_and_init:
-    permissions:
-      contents: write
-      repository-projects: write
-      statuses: write
-      pull-requests: write
+    permissions: write-all
+      #contents: write
+      #repository-projects: write
+      #statuses: write
+      #pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Vérifier l'entrée
