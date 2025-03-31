@@ -11,9 +11,10 @@ on:
 jobs:
   create_and_init:
     permissions:
-      contents: read
-      repository-projects: read
+      contents: write
+      repository-projects: write
       statuses: write
+      pull-requests: write
       # Grant permission to create repositories
       repository-administration: write
     runs-on: ubuntu-latest
