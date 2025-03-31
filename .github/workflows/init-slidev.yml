@@ -10,6 +10,12 @@ on:
 
 jobs:
   create_and_init:
+    permissions:
+      contents: read
+      repository-projects: read
+      statuses: write
+      # Grant permission to create repositories
+      repository-administration: write
     runs-on: ubuntu-latest
     steps:
       - name: Vérifier l'entrée
