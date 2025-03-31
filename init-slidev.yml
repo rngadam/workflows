@@ -1,0 +1,55 @@
+name: Créer un dépôt Slidev
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        description: "Nom du nouveau dépôt"
+        required: true
+        type: string
+
+jobs:
+  create_and_init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier l'entrée
+        run: |
+          echo "Nom du dépôt : ${{ github.event.inputs.repo_name }}"
+          # Valider le nom du dépôt (peut ajouter des vérifications supplémentaires)
+          if [[ -z "${{ github.event.inputs.repo_name }}" ]]; then
+            echo "Le nom du dépôt est vide. Veuillez fournir un nom de dépôt."
+            exit 1
+          fi
+
+      - name: Configurer Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Créer un dépôt
+        run: |
+          gh repo create "${{ github.event.inputs.repo_name }}" --private
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cloner le dépôt
+        run: |
+          git clone "https://github.com/${{ github.repository_owner }}/${{ github.event.inputs.repo_name }}.git"
+          cd "${{ github.event.inputs.repo_name }}"
+
+      - name: Initialiser Slidev
+        run: |
+          npm init slidev
+          # Répondre aux prompts de npm init slidev (peut nécessiter d'autres adaptations)
+          echo "Dépôt Slidev initialisé."
+
+      - name: Ajouter et commiter les fichiers
+        run: |
+          git add .
+          git commit -m "Initialisation de Slidev"
+
+      - name: Pousser vers GitHub
+        run: |
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
