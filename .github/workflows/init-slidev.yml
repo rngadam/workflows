@@ -28,7 +28,7 @@ jobs:
 
       - name: Créer un dépôt
         run: |
-          gh repo create "${{ github.event.inputs.repo_name }}"
+          gh repo create "${{ github.event.inputs.repo_name }}" --public
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
